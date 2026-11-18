@@ -35,7 +35,7 @@ Don't use for: writing a repo's docs tree (`archivist`), drawn architecture diag
 
 1. **Status first.** The kit manual's "Existing map" line is not filled in here. Run `terminal(command='node "$K/scripts/status.mjs"', workdir=<root>)` and take the root and `--refresh` from the request.
 2. **The agent is Hermes.** The scripts recognise a Hermes session, so the map's prompts read "Fix with Hermes" and its Ask bar runs Hermes. Skip everything in the kit manual about `CLAUDE.local.md`, `--claude-md` and publishing to the Claude app; none of it applies. `--agent hermes` forces it when a script runs outside a session.
-3. **Where it writes.** Only the `floorplan/` folder in the mapped codebase, which ignores itself in git. A request for a floorplan of a named repo is the request to work in that repo, for that folder only. Never map a repo under `D:\My apps` that Michai did not name.
+3. **Where it writes.** Only the `floorplan/` folder in the mapped codebase, which ignores itself in git. A request for a floorplan of a named repo is the request to work in that repo, for that folder only. Never map a repo under `D:\My apps` that the user did not name.
 4. **The logo (after `architecture.json`, before the build).** See the next section.
 5. **Descriptions on a large codebase.** Over about 150 files, split the worksheets with `delegate_task`: one child per area, each given the codebase root, its worksheet keys, the full path of `$K/references/writing-descriptions.md` to read first, and the rule to edit only its own `floorplan/descriptions/<key>.json` files and keep the keys. Children know nothing else. Rebuild and read `DESCRIPTIONS files X/Y` yourself; a child's "done" is not proof.
 6. **Show it.** `terminal(command='FLOORPLAN_NO_PROMPTS=1 node "$K/scripts/open.mjs" "<root>"')` starts the map's server and opens the browser. When the prompt carries a `[workstation-ui: canvas ...]` tag, add `--no-open` and open the printed URL in the canvas (skill `workstation-canvas`). `FLOORPLAN_NO_PROMPTS=1` keeps the upstream author's cloud waitlist card off the map.
@@ -46,7 +46,7 @@ Don't use for: writing a repo's docs tree (`archivist`), drawn architecture diag
 The top bar shows the mapped project's own logo, taken from its codebase. A wrong logo is worse than none: when unsure, leave it unset and the map shows the Coeus mark.
 
 1. List candidates: `search_files(pattern='*logo*.png', target='files', path=<root>)`, then `*brand*.png` and `*mark*.png` if that finds nothing. Ignore `node_modules`, build output and screenshots.
-2. Pick the logo of the product this codebase is, not a partner's, a customer's or the Coeus corporate mark sitting beside it. The file name and where the app's own header imports it from usually settle it; look with `vision_analyze` when they do not.
+2. Pick the logo the app shows as its own in its header, side menu or sign-in page: search the UI code for the image (`search_files(pattern='logo', path=<root>, file_glob='*.tsx')`) and take the file it loads there. A partner's, a vendor's or the Coeus corporate mark shown elsewhere is not it. Look with `vision_analyze` when the file names do not settle it, and say in the report which logo the map carries.
 3. In `floorplan/architecture.json` set `project.logo` to the light-on-transparent version (for the dark map) and, when the codebase has one, `project.logoLight` to the dark version. Paths are relative to the codebase root. With only `project.logo`, the light theme shows it inverted, which is right for a single-colour white mark and wrong for a coloured one.
 4. Build and read the `BRAND` line. `! project.logo ... was left out: <why>` means the Coeus mark was used: the file has to be a PNG inside the codebase and no larger than 512 KB.
 
@@ -73,7 +73,8 @@ The fork adds files and touches few upstream lines, so most merges are clean. Li
 
 ## Pitfalls
 
-- **Write scripts with `write_file`, not a shell heredoc.** Why: git-bash turned `\\r?\\n` inside a heredoc into a real line break and broke a regex in `serve.mjs`.
+- **Write scripts with `write_file`, not a shell heredoc.** Why: git-bash rewrote backslashes inside heredocs (a `\r?\n` became a real line break and broke a regex in `serve.mjs`; `sed` with `\\` silently matched nothing).
+- **`canvas js` does not run on a map.** Why: the page's security policy allows only its own scripts. Use `canvas read`, `canvas look` and `canvas shot` there.
 - **A logo is named, never guessed.** Why: several Coeus repos hold partner and customer logos next to their own. The build takes only `project.logo`; it does not search.
 - **Add a house value when the viewer gains a colour variable.** Why: a variable the sheet does not set keeps the author's colour, often a purple. The brand test names it.
 - **The map's server is one per codebase** on 127.0.0.1:4378 or the next free port, and stops two hours after its last tab closes. Stop it now with `node floorplan/serve.mjs --stop` from the codebase root.
