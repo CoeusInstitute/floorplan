@@ -18,6 +18,7 @@ import { buildPlanHealth } from './lib/blueprint.mjs';
 import { buildScreens } from './lib/screens.mjs';
 import { writeClaudeMd } from './lib/claudemd.mjs';
 import { detectAgent } from './lib/agent.mjs';
+import { brand } from './lib/brand.mjs';
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const SKILL_DIR = path.resolve(HERE, '..');
@@ -634,7 +635,7 @@ const graphQuery = fs.readFileSync(path.join(SKILL_DIR, 'assets', 'graph-query.j
 const page = (g) => template
   .replace('/*__GRAPH_QUERY__*/', () => scriptCode(graphQuery))
   .replace('<!--__ELK_SCRIPT__-->', () => elkTag)
-  .replace('/*__FONTS__*/', () => fontCss)
+  .replace('/*__FONTS__*/', () => fontCss + coeus.css)
   .replace(/__FLOORPLAN_TITLE__/g, () => escapeHtml(`${arch.project.name} map`))
   .replace(/__FLOORPLAN_LOGO__/g, () => dataUri('logo.png'))
   .replace(/__FLOORPLAN_FAVICON__/g, () => dataUri('favicon.png'))
@@ -642,6 +643,8 @@ const page = (g) => template
   .replace('/*__FLOORPLAN_DATA__*/null', () => scriptJson(g));
 const uiDir = path.join(SKILL_DIR, 'assets', 'ui');
 const uiScripts = fs.existsSync(uiDir) ? fs.readdirSync(uiDir).filter((n) => n.endsWith('.js')).sort().map((n) => `<script>/* ui/${n} */\n${scriptCode(fs.readFileSync(path.join(uiDir, n), 'utf8'))}</script>`).join('\n') : '';
+// the Coeus Institute appearance and the project's logo (lib/brand.mjs), after the page's own fonts
+const coeus = brand(root, arch.project, [template, uiScripts]); report.push(coeus.report);
 // the map on disk (and as serve.mjs serves it): only its own scripts run, and it talks to nothing but its own
 // local server. The copy for the Claude app (--artifact) gets none: the app runs its own code in that page.
 const html = withPolicy(page(graph), 'local');
@@ -689,6 +692,7 @@ report.push(graph.recent
 // equivalent (AGENTS.md is shared with the team), so a map built by Codex leaves the project's notes alone,
 // and so does a map made without an agent session. Unattended mode never writes outside the map folder.
 if (agent === 'codex') report.push('AGENT  Codex: questions on the map run through Codex');
+if (agent === 'hermes') report.push('AGENT  Hermes: questions on the map run through Hermes');
 if (agent === 'none') report.push("AGENT  none: made without an agent session, so the map's prompts don't name one");
 let claudeNote = null;
 if (scan.blueprint) report.push('BLUEPRINT  planned, not built yet: drawn from floorplan/plan.json');

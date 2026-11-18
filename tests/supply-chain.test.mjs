@@ -136,8 +136,8 @@ test('no code is downloaded, decoded or built from text at run time', () => {
 
 test('every shipped file is source, text or a known kind of image or font', () => {
   const kinds = new Set(shipped.map((f) => path.extname(f).toLowerCase()));
-  assert.deepEqual([...kinds].sort(), ['.html', '.js', '.json', '.md', '.mjs', '.png', '.txt', '.woff2', '.yaml'].filter((k) => kinds.has(k)), 'kinds of file');
-  for (const k of kinds) assert.ok(['.html', '.js', '.json', '.md', '.mjs', '.png', '.txt', '.woff2', '.yaml'].includes(k), `unexpected kind of file: ${k}. ${UPDATE}`);
+  assert.deepEqual([...kinds].sort(), ['.css', '.html', '.js', '.json', '.md', '.mjs', '.png', '.txt', '.woff2', '.yaml'].filter((k) => kinds.has(k)), 'kinds of file');
+  for (const k of kinds) assert.ok(['.css', '.html', '.js', '.json', '.md', '.mjs', '.png', '.txt', '.woff2', '.yaml'].includes(k), `unexpected kind of file: ${k}. ${UPDATE}`);
 });
 
 test('vendored files are unchanged: the layout engine matches elkjs 0.9.3 on npm byte for byte', () => {

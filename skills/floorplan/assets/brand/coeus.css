@@ -1,0 +1,108 @@
+/* The Coeus Institute appearance for Floorplan maps: graphite neutrals, one brass accent, Geist.
+   Values are the dark-warm and light-warm appearances of the Coeus design system (its tokens.css), mapped
+   onto the viewer's own variable names. This sheet goes into the page head ahead of the viewer's styles,
+   so every selector is written to outrank the viewer's rule for the same thing (:root:root over :root).
+   The light block is spelled :root[data-theme="light"]:root so it is never taken for the viewer's own.
+   The viewer's own colours stay in the page untouched; nothing here edits them. */
+
+:root:root {
+  --sans: "Geist Variable", "Geist", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono: "Geist Mono Variable", "Geist Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+
+  /* surfaces: page, cards, raised controls, floating glass */
+  --bg: oklch(0.232 0.004 70); --bg-rgb: 31, 29, 27; --grid: oklch(0.262 0.004 70);
+  --ink: 238, 236, 234;
+  --surface: oklch(0.268 0.005 70); --surface-hover: oklch(0.285 0.005 70);
+  --raise: oklch(0.305 0.006 70); --raise-2: oklch(0.340 0.006 70);
+  --elev: oklch(0.300 0.006 70 / .86);
+  --dir-bg: oklch(0.268 0.005 70 / .7); --menu-solid: oklch(0.300 0.006 70 / .95); --well: oklch(0.178 0.004 70 / .55);
+  --palette-bg: oklch(0.300 0.006 70 / .96); --modal-bg: oklch(0.300 0.006 70 / .97);
+  --scrim: oklch(0.14 0.003 70 / .5); --scrim-2: oklch(0.14 0.003 70 / .58);
+
+  /* text */
+  --text: oklch(0.945 0.004 80); --text-2: oklch(0.790 0.005 75); --text-3: oklch(0.675 0.005 75); --text-4: oklch(0.640 0.005 75);
+
+  /* the one accent, brass: primary actions, what is switched on, focus */
+  --on: oklch(0.790 0.105 78); --on-hover: oklch(0.830 0.105 78); --on-text: oklch(0.230 0.020 70);
+  --ring: oklch(0.790 0.105 78); --focus: oklch(0.790 0.105 78 / .15);
+
+  /* status: meaning only */
+  --recent: oklch(0.770 0.100 155); --on-recent-text: oklch(0.220 0.030 155);
+  --ok: oklch(0.770 0.100 155); --sev-high: oklch(0.715 0.130 30); --sev-medium: oklch(0.740 0.140 52); --sev-low: oklch(0.675 0.005 75);
+  --on-sev-text: oklch(0.200 0.010 70);
+  --warn-bg: oklch(0.740 0.140 52 / .09); --warn-text: oklch(0.850 0.080 60); --warn-sheet: oklch(0.300 0.030 60 / .92);
+  --ok-bg: oklch(0.770 0.100 155 / .09); --ok-text: oklch(0.850 0.070 155); --err-text: oklch(0.800 0.100 30);
+
+  /* elevation */
+  --shadow-card: 0 1px 0 oklch(1 0 0 / .03) inset, 0 3px 10px oklch(0 0 0 / .26);
+  --shadow-float: 0 0 0 1px rgba(var(--ink), .05), 0 10px 28px oklch(0 0 0 / .32);
+  --shadow-lift: 0 1px 0 oklch(1 0 0 / .04) inset, 0 6px 18px oklch(0 0 0 / .34);
+  --shadow-deep: 0 18px 50px oklch(0 0 0 / .45);
+
+  /* shape and motion */
+  --r-card: 6px; --r-panel: 8px; --r-ctl: 4px;
+  --ease: cubic-bezier(.22, .61, .36, 1);
+
+  /* kinds of connection, kinds of part and request methods: the status hues plus the muted product blue.
+     No purple or indigo, and brass is kept for the accent. */
+  --k-import: oklch(0.560 0.005 75); --k-http: oklch(0.760 0.085 248); --k-call: oklch(0.720 0.085 205); --k-rpc: oklch(0.800 0.070 230);
+  --k-event: oklch(0.760 0.100 10); --k-queue: oklch(0.740 0.140 52); --k-data: oklch(0.760 0.085 180); --k-config: oklch(0.520 0.005 75); --k-contains: oklch(0.425 0.006 70);
+  --n-ui: oklch(0.720 0.085 205); --n-service: oklch(0.760 0.085 248); --n-worker: oklch(0.740 0.140 52); --n-library: oklch(0.770 0.100 155);
+  --n-feature: oklch(0.800 0.070 230); --n-data: oklch(0.760 0.085 180); --n-config: oklch(0.675 0.005 75);
+  --n-test: oklch(0.760 0.100 10); --n-script: oklch(0.790 0.005 75); --n-infra: oklch(0.715 0.130 30); --n-external: oklch(0.790 0.085 120);
+  --n-misc: oklch(0.675 0.005 75); --n-dir: oklch(0.720 0.005 75); --n-file: oklch(0.720 0.005 75);
+  --n-module: oklch(0.720 0.005 75); --n-symbol: oklch(0.800 0.070 205); --n-route: oklch(0.760 0.085 248); --n-connector: oklch(0.675 0.005 75);
+  --m-GET: oklch(0.770 0.100 155); --m-POST: oklch(0.760 0.085 248); --m-PUT: oklch(0.740 0.140 52); --m-PATCH: oklch(0.720 0.085 205);
+  --m-DELETE: oklch(0.715 0.130 30); --m-CALL: oklch(0.760 0.085 180); --m-ANY: oklch(0.675 0.005 75);
+}
+
+:root[data-theme="light"]:root {
+  --bg: oklch(0.955 0.006 80); --bg-rgb: 242, 240, 236; --grid: oklch(0.885 0.009 80);
+  --ink: 26, 21, 15;
+  --surface: oklch(0.992 0.003 80); --surface-hover: oklch(0.978 0.004 80);
+  --raise: oklch(0.940 0.008 80); --raise-2: oklch(0.915 0.009 80);
+  --elev: oklch(0.995 0.002 80 / .92); --hair: rgba(var(--ink), .09); --hair-2: rgba(var(--ink), .15);
+  --dir-bg: oklch(0.992 0.003 80 / .7); --menu-solid: oklch(0.995 0.002 80 / .96); --well: rgba(var(--ink), .06);
+  --palette-bg: oklch(0.995 0.002 80 / .98); --modal-bg: oklch(0.995 0.002 80 / .98);
+  --scrim: oklch(0.3 0.01 70 / .32); --scrim-2: oklch(0.3 0.01 70 / .38);
+
+  --text: oklch(0.200 0.014 70); --text-2: oklch(0.360 0.014 70); --text-3: oklch(0.470 0.012 70); --text-4: oklch(0.530 0.012 75);
+
+  /* dark ink on brass: white fails 4.5:1 on light brass */
+  --on: oklch(0.660 0.120 72); --on-hover: oklch(0.620 0.120 72); --on-text: oklch(0.230 0.020 70);
+  --ring: oklch(0.520 0.110 65); --focus: oklch(0.660 0.120 72 / .14);
+
+  --recent: oklch(0.520 0.100 155); --on-recent-text: oklch(0.985 0.004 80);
+  --ok: oklch(0.520 0.100 155); --sev-high: oklch(0.555 0.150 28); --sev-medium: oklch(0.520 0.120 55); --sev-low: oklch(0.530 0.012 75);
+  --on-sev-text: oklch(0.985 0.004 80);
+  --warn-bg: oklch(0.610 0.150 48 / .14); --warn-text: oklch(0.400 0.090 55); --warn-sheet: oklch(0.965 0.030 80 / .97);
+  --ok-bg: oklch(0.520 0.100 155 / .12); --ok-text: oklch(0.400 0.085 155); --err-text: oklch(0.480 0.150 28);
+
+  --shadow-card: 0 0 0 1px oklch(0.860 0.010 80), 0 1px 2px oklch(0.3 0.01 70 / .05), 0 2px 8px oklch(0.3 0.01 70 / .06);
+  --shadow-float: 0 0 0 1px oklch(0.860 0.010 80), 0 8px 24px oklch(0.3 0.01 70 / .10);
+  --shadow-lift: 0 4px 16px oklch(0.3 0.01 70 / .10);
+  --shadow-deep: 0 18px 50px oklch(0.3 0.01 70 / .16);
+
+  --k-import: oklch(0.470 0.012 70); --k-http: oklch(0.480 0.140 250); --k-call: oklch(0.550 0.085 210); --k-rpc: oklch(0.540 0.110 235);
+  --k-event: oklch(0.560 0.130 10); --k-queue: oklch(0.610 0.150 48); --k-data: oklch(0.520 0.085 185); --k-config: oklch(0.500 0.012 70); --k-contains: oklch(0.660 0.012 80);
+  --n-ui: oklch(0.550 0.085 210); --n-service: oklch(0.480 0.140 250); --n-worker: oklch(0.610 0.150 48); --n-library: oklch(0.520 0.100 155);
+  --n-feature: oklch(0.540 0.110 235); --n-data: oklch(0.520 0.085 185); --n-config: oklch(0.530 0.012 75);
+  --n-test: oklch(0.560 0.130 10); --n-script: oklch(0.470 0.012 70); --n-infra: oklch(0.555 0.150 28); --n-external: oklch(0.540 0.100 120);
+  --n-misc: oklch(0.530 0.012 75); --n-dir: oklch(0.530 0.012 75); --n-file: oklch(0.530 0.012 75);
+  --n-module: oklch(0.530 0.012 75); --n-symbol: oklch(0.500 0.085 210); --n-route: oklch(0.480 0.140 250); --n-connector: oklch(0.530 0.012 75);
+  --m-GET: oklch(0.520 0.100 155); --m-POST: oklch(0.480 0.140 250); --m-PUT: oklch(0.610 0.150 48); --m-PATCH: oklch(0.550 0.085 210);
+  --m-DELETE: oklch(0.555 0.150 28); --m-CALL: oklch(0.520 0.085 185); --m-ANY: oklch(0.530 0.012 75);
+}
+
+/* the five colours of the languages bar are written into the page's script as fixed values (one is a
+   purple); each is swapped for a house hue. tests/brand.test.mjs fails when the viewer gains another. */
+[style*="#a78bfa"] { background: var(--n-service) !important; }
+[style*="#38bdf8"] { background: var(--n-ui) !important; }
+[style*="#34d399"] { background: var(--n-library) !important; }
+[style*="#fbbf24"] { background: var(--n-worker) !important; }
+[style*="#f472b6"] { background: var(--n-test) !important; }
+
+/* the logo in the top bar: the project's own, or the Coeus mark. The "Made with Floorplan" credit on an
+   exported copy keeps Floorplan's logo, so the rule reaches only the mark that sits in .brand. */
+.brand > .mark.mark { content: var(--brand-logo); }
+:root[data-theme="light"] .brand > .mark.mark { content: var(--brand-logo-light); filter: var(--brand-logo-light-filter); }

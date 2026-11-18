@@ -9,6 +9,7 @@ import { isUnattended } from './common.mjs';
 const DETECT = {
   claude: () => false, // the default
   codex: (env) => !!(env.CODEX_THREAD_ID || env.CODEX_SESSION_ID),
+  hermes: (env) => env.HERMES_AGENT === 'true' || !!env.HERMES_SESSION_ID,
   none: () => false, // only when asked for, or in unattended mode
 };
 export const AGENTS = Object.keys(DETECT);
@@ -20,7 +21,7 @@ export function detectAgent(args = {}, env = process.env) {
   return AGENTS.find((a) => DETECT[a](env)) || 'claude';
 }
 
-const CLI_NAMES = { claude: 'the Claude Code CLI', codex: 'Codex' };
+const CLI_NAMES = { claude: 'the Claude Code CLI', codex: 'Codex', hermes: 'Hermes' };
 /**
  * What the CLI answering the map's questions is called, for open.mjs: its usual name, or, when its --version
  * names another program (a wrapper installed under the same command, `devin 3000.11.238` answering to
@@ -30,6 +31,7 @@ export function cliLabel(engine, version = '') {
   const usual = CLI_NAMES[engine] || CLI_NAMES.claude;
   const v = String(version || '').trim();
   const named = /^([A-Za-z][\w.-]{0,40})\s+v?\d/.exec(v)?.[1];
-  if (!named || new RegExp(engine === 'codex' ? 'codex' : 'claude', 'i').test(v)) return usual;
-  return `${named}, found as the ${engine === 'codex' ? 'codex' : 'claude'} command`;
+  const command = CLI_NAMES[engine] ? engine : 'claude';
+  if (!named || new RegExp(command, 'i').test(v)) return usual;
+  return `${named}, found as the ${command} command`;
 }
